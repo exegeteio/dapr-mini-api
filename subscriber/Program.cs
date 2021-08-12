@@ -6,8 +6,6 @@ using Microsoft.AspNetCore.Mvc;
 var builder = WebApplication.CreateBuilder(args);
 var app = builder.Build();
 
-var dapr = new DaprClientBuilder().Build();
-
 if (app.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
@@ -16,6 +14,8 @@ if (app.Environment.IsDevelopment())
 app.UseCloudEvents();
 app.UseRouting();
 app.UseEndpoints(endpoints => endpoints.MapSubscribeHandler());
+
+var dapr = new DaprClientBuilder().Build();
 
 app.MapGet("/", async () => await dapr.GetStateAsync<int>("statestore", "counter"));
 
